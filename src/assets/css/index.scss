@@ -1,0 +1,76 @@
+@import './variables.scss';
+@import './mixin.scss';
+
+html,
+body .app {
+  color: #333333;
+  font-family: Arial, Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, sans-serif;
+  background-color: $background-color;
+}
+
+.app-container {
+  padding-bottom: 50px;
+}
+
+//全局背景颜色，和TopBar一致
+.app-color {
+  background-color: $cbg-color;
+}
+
+//全局颜色，和TopBar一致
+.app-text-color {
+  color: $cbg-color;
+}
+
+//菜单项
+.app-menu-color {
+  color: #0079b6;
+}
+
+//上面导航栏颜色
+.top-text {
+  color: #171717;
+  font-weight:normal;
+}
+
+/* 将button按钮固定在页面底部 */
+.btn-block{
+  position: fixed;
+  bottom: 5px;
+  background: $cbg-color;
+}
+
+.top-block{
+  position: fixed;
+  //top: 50px;
+}
+
+.align-center{
+  margin:0 auto; /* 居中 这个是必须的，，其它的属性非必须 */
+  text-align:center; /* 文字等内容居中 */
+}
+
+/* 回到顶部in your css */
+.btn-to-top {
+  width: 30px;
+  height: 30px;
+  padding: 10px 10px;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 22px;
+}
+
+//说明、备注类样式
+.desc-class {
+  color: #551b17;
+}
+
+.custom-cell-title {
+  margin-right: 0px;
+  vertical-align: right;
+}
+
+.custom-cell {
+  height: 35px;
+}
+
