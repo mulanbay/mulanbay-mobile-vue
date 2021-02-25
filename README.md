@@ -7,8 +7,13 @@
 木兰湾管理系统后端项目：
 * 服务器端[mulanbay-server](https://gitee.com/mulanbay/mulanbay-server)
 
-木兰湾管理系统其他前端项目：
+木兰湾管理系统前端项目：
+
+VUE版本
 * 基于Vue的前端(PC端)[mulanbay-ui-vue](https://gitee.com/mulanbay/mulanbay-ui-vue)
+* 基于Vue的前端(移动端)[mulanbay-mobile-vue](https://gitee.com/mulanbay/mulanbay-mobile-vue)
+
+Jquery版本(V3.0版本后不再维护，以VUE版本为主)
 * 基于Jquery的前端(PC端)[mulanbay-ui-jquery](https://gitee.com/mulanbay/mulanbay-ui-jquery)
 * 基于Jquery的前端(移动端)[mulanbay-mobile-jquery](https://gitee.com/mulanbay/mulanbay-mobile-jquery)
 
