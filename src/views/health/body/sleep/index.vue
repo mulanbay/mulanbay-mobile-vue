@@ -35,7 +35,7 @@
             </template>
             <template #title>
               <span class="custom-title">{{beautifyDate(item.sleepDate)}}</span>
-              <van-tag type="danger" v-if="item.quality<6">差</van-tag>
+              <van-tag type="danger" v-if="item.quality<3">差</van-tag>
             </template>
             <template #default>
               <span class="van-ellipsis">睡眠质量:{{item.quality}}</span>

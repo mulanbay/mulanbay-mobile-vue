@@ -34,7 +34,7 @@
         :rules="[{ required: true, message: '请填写睡眠质量' }]"
         >
         <template #input>
-          <van-rate v-model="form.quality" :count="10"/>
+          <van-rate v-model="form.quality" :count="5"/>
         </template>
       </van-field>
       <van-field
@@ -156,7 +156,7 @@
         this.vanSleepTime = new Date();
         this.vanGetUpTime = new Date();
         this.form={
-          quality:6,
+          quality:3,
           lightSleep:0,
           deepSleep:0
         };

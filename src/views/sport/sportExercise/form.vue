@@ -38,7 +38,7 @@
       <van-field
         v-model="form.kilometres"
         required
-        type="digit"
+        type="number"
         label="锻炼数值"
         :rules="[{ required: true, message: '请填写锻炼数值' }]">
         <template #button>
