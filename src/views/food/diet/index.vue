@@ -55,6 +55,7 @@
             </template>
             <template #title>
               <span class="custom-title">{{beautifyDateTime(item.occurTime)}}</span>
+              <van-tag type="danger" v-if="item.score<3">差</van-tag>
             </template>
             <template #default>
               <span class="van-ellipsis">{{item.location}}</span>
