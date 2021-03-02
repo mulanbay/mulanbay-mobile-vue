@@ -57,13 +57,20 @@
               <span class="custom-title">{{beautifyDateTime(item.occurTime)}}</span>
             </template>
             <template #default>
-              <span class="van-ellipsis">评分:{{item.score}}</span>
+              <span class="van-ellipsis">{{item.location}}</span>
             </template>
           </van-cell>
           <template #right>
             <van-button square type="danger" text="删除"  @click="handleDelete(item.id)" />
           </template>
         </van-swipe-cell>
+        <van-cell center class="custom-cell" title="评分" >
+          <template #default>
+            <span class="van-ellipsis">
+              <van-rate v-model="item.score" :count="5" readonly color="#ffd21e"/>
+            </span>
+          </template>
+        </van-cell>
         <van-cell center class="custom-cell" title="价格" :value="'￥'+item.price" />
         <van-cell center class="custom-cell" title="餐次" :value="item.dietTypeName+'('+item.foodTypeName+')'" />
         <van-cell :value="item.foods" value-class="desc-class"/>
@@ -94,7 +101,7 @@
 
 <script>
   import { fetchList,deleteDiet } from '@/api/food/diet'
-  import { Col,Row,List,PullRefresh,Dialog,SwipeCell,Search,Notify,Tab,Tabs,Icon  } from 'vant';
+  import { Col,Row,List,PullRefresh,Dialog,SwipeCell,Search,Notify,Tab,Tabs,Icon,Rate  } from 'vant';
   import TopBar from "components/TopBar";
   import { formatDateDesc } from '@/utils/datetime'
 
@@ -112,7 +119,8 @@ export default {
     [Dialog.Component.name]: Dialog.Component,
     [Notify.Component.name]: Notify.Component,
     [SwipeCell.name]: SwipeCell,
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Rate.name]: Rate
   },
   data() {
     return {

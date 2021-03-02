@@ -70,7 +70,7 @@
       :rules="[{ required: true, message: '请填写评分' }]"
       >
       <template #input>
-        <van-rate v-model="form.score" :count="5"/>
+        <van-rate v-model="form.score" :count="5" color="#ffd21e"/>
       </template>
       <template #right-icon>
         <van-icon name="question-o" @click="showScoreHelp"/>

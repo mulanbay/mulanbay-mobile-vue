@@ -34,7 +34,7 @@
         :rules="[{ required: true, message: '请填写睡眠质量' }]"
         >
         <template #input>
-          <van-rate v-model="form.quality" :count="5"/>
+          <van-rate v-model="form.quality" :count="5" color="#ffd21e"/>
         </template>
       </van-field>
       <van-field

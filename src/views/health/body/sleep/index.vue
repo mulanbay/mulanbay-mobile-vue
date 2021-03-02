@@ -38,15 +38,23 @@
               <van-tag type="danger" v-if="item.quality<3">差</van-tag>
             </template>
             <template #default>
-              <span class="van-ellipsis">睡眠质量:{{item.quality}}</span>
+              <span class="van-ellipsis">
+
+              </span>
             </template>
           </van-cell>
           <template #right>
             <van-button square type="danger" text="删除"  @click="handleDelete(item.id)" />
           </template>
         </van-swipe-cell>
-        <van-cell center class="custom-cell" title="睡觉时间" :value="beautifyDateTime(item.sleepTime)" />
-        <van-cell center class="custom-cell" title="起床时间" :value="beautifyDateTime(item.getUpTime)" />
+        <van-cell center class="custom-cell" title="睡眠质量" >
+          <template #default>
+            <span class="van-ellipsis">
+              <van-rate v-model="item.quality" :count="5" readonly color="#ffd21e"/>
+            </span>
+          </template>
+        </van-cell>
+        <van-cell center class="custom-cell" title="睡眠时间" :value="formatSleepRange(item)" />
         <van-cell center class="custom-cell" title="睡眠时长" :value="formatSleepTimes(item.totalMinutes)" />
         <van-cell :value="item.remark" value-class="desc-class" />
       </van-cell-group>
@@ -67,7 +75,7 @@
 
 <script>
   import { fetchList,deleteSleep,sleep,getUp } from '@/api/health/body/sleep'
-  import { Col,Row,List,PullRefresh,Tag,Dialog,SwipeCell,Search,Icon,Notify  } from 'vant';
+  import { Col,Row,List,PullRefresh,Tag,Dialog,SwipeCell,Search,Icon,Notify,Rate  } from 'vant';
   import TopBar from "components/TopBar";
   import { formatDateDesc,formatSeconds,getNowDateTimeString } from '@/utils/datetime'
 
@@ -84,7 +92,8 @@ export default {
     [Search.name]: Search,
     [Dialog.Component.name]: Dialog.Component,
     [Notify.Component.name]: Notify.Component,
-    [SwipeCell.name]: SwipeCell
+    [SwipeCell.name]: SwipeCell,
+    [Rate.name]: Rate
   },
   data() {
     return {
@@ -126,9 +135,13 @@ export default {
     //this.getMessageList();
   },
   methods: {
-    /**格式时间*/
-    formatSleepDate(date){
-      return date.substr(0,16);
+    /**格式睡眠时间*/
+    formatSleepRange(row){
+      let s = row.sleepTime.substr(11,5);
+      if(row.getUpTime!=null){
+        s+='~~'+row.getUpTime.substr(11,5);
+      }
+      return s;
     },
     formatSleepTimes(minutes){
       return formatSeconds(minutes*60);
