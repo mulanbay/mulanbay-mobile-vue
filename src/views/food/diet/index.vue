@@ -102,7 +102,7 @@
 
 <script>
   import { fetchList,deleteDiet } from '@/api/food/diet'
-  import { Col,Row,List,PullRefresh,Dialog,SwipeCell,Search,Notify,Tab,Tabs,Icon,Rate  } from 'vant';
+  import { Col,Row,List,PullRefresh,Dialog,SwipeCell,Search,Notify,Tab,Tabs,Icon,Rate,Tag  } from 'vant';
   import TopBar from "components/TopBar";
   import { formatDateDesc } from '@/utils/datetime'
 
@@ -121,7 +121,8 @@ export default {
     [Notify.Component.name]: Notify.Component,
     [SwipeCell.name]: SwipeCell,
     [Icon.name]: Icon,
-    [Rate.name]: Rate
+    [Rate.name]: Rate,
+    [Tag.name]: Tag
   },
   data() {
     return {
