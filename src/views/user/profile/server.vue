@@ -36,7 +36,7 @@
           <svg-icon icon-class="read" className="icon-grid-o" />
         </div>
       </van-grid-item>
-      <van-grid-item text="用药管理" :to="{ name:'TreatDrug' }">
+      <van-grid-item text="用药日历" :to="{ name:'TreatDrugCalendar' }">
         <div slot="icon">
           <svg-icon icon-class="drug" className="icon-grid-o" />
         </div>

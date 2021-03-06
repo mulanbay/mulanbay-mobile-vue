@@ -86,6 +86,18 @@
         </van-steps>
       </template>
     </van-pull-refresh>
+    <van-goods-action>
+      <van-goods-action-icon icon="close" text="未服用" :badge="unTakes" />
+      <van-goods-action-icon icon="passed" text="已服用" :badge="takes"/>
+      <van-goods-action-icon icon="question-o" text="未匹配" :badge="unMatchs"/>
+      <van-goods-action-icon icon="cart-o" text="药品数" :badge="drugs"/>
+      <van-goods-action-button
+        type="primary"
+        class="app-color"
+        text="药品列表"
+        :to="{ name:'TreatDrug',params: {} }"
+      />
+    </van-goods-action>
     <!--回到顶部-->
     <back-to-top bottom="60px" right="10px">
       <van-button round block type="primary" size="small" class="app-color" icon="back-top">
@@ -96,7 +108,8 @@
 
 <script>
   import {calendar} from "@/api/health/treat/treatDrug";
-  import { Col,Row,PullRefresh,Tag,Calendar,Notify,Dialog,Divider,Card,Step, Steps  } from 'vant';
+  import { Col,Row,PullRefresh,Tag,Calendar,Notify,Dialog,Divider,Card,Step, Steps,  } from 'vant';
+  import { GoodsAction, GoodsActionIcon, GoodsActionButton} from 'vant';
   import TopBar from "components/TopBar";
   import { getNowDateString,getFormatDate,getDayByDate,formatDays,tillNowDays } from '@/utils/datetime'
   import { getBussIconClass,sortData  } from '@/utils/index'
@@ -115,7 +128,10 @@ export default {
     [Divider.name]: Divider,
     [Card.name]: Card,
     [Step.name]: Step,
-    [Steps.name]: Steps
+    [Steps.name]: Steps,
+    [GoodsAction.name]: GoodsAction,
+    [GoodsActionIcon.name]: GoodsActionIcon,
+    [GoodsActionButton.name]: GoodsActionButton
   },
   data() {
     return {
@@ -134,7 +150,12 @@ export default {
       form:{},
       showContent:false,
       //日期标题
-      bussDayTitle:undefined
+      bussDayTitle:undefined,
+      //统计
+      unTakes:0,
+      takes:0,
+      drugs:0,
+      unMatchs:0
     }
   },
   computed: {
@@ -212,6 +233,12 @@ export default {
       this.finished = false;
       calendar(para).then(response => {
         this.pushLoading = false;
+        //统计
+        this.unTakes=0;
+        this.takes=0;
+        this.drugs=0;
+        this.unMatchs=0;
+        let map = new Map();
         let datas = response;
         for(let i=0;i<datas.length;i++){
           let detailList = datas[i].detailList;
@@ -219,15 +246,20 @@ export default {
             let dt = detailList[j];
             if(dt.occurTime==null){
               //dt.occurTimeStr = '未用药';
+              this.unTakes++;
               dt.tag = '未用药';
             }else{
               dt.occurTimeStr = dt.occurTime.substr(11,5);
+              this.takes++;
             }
             if(dt.match==false){
               dt.tag='未匹配';
+              this.unMatchs++;
             }
+            map.set(dt.treatDrugId,1);
           }
         }
+        this.drugs=map.size;
         this.dataList = datas;
         sortData(this.dataList,'asc');
         //没有分页功能

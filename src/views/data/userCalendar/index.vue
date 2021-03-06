@@ -100,6 +100,7 @@
       <van-button round block type="primary" class="app-color" @click="showContent=false" >
           关闭
       </van-button>
+      </br>
     </van-popup>
   </div>
 </template>
