@@ -59,10 +59,10 @@
         <van-cell center class="custom-cell" title="数量" :value="item.amount+item.unit" />
         <van-row type="flex" justify="center">
           <van-col span="8" style="text-align: center;">
-            <van-button plain class="app-menu-color" size="small" icon="add-o" :to="{ name:'TreatDrugDetailAdd',params: {treatDrugId:item.id} }" style="width: 100%;">新增用药</van-button>
+            <van-button plain class="app-menu-color" size="small" icon="add-o" :to="{ name:'TreatDrugDetailAdd',params: {treatDrugId:item.id,r:false} }" style="width: 100%;">新增用药</van-button>
           </van-col>
           <van-col span="8" style="text-align: center;">
-            <van-button plain class="app-menu-color" size="small" icon="apps-o" :to="{ name:'TreatDrugDetail',params: {treatDrugId:item.id,fromPath:'TreatTrug'} }" style="width: 100%;">用药记录</van-button>
+            <van-button plain class="app-menu-color" size="small" icon="apps-o" :to="{ name:'TreatDrugDetail',params: {treatDrugId:item.id} }" style="width: 100%;">用药记录</van-button>
           </van-col>
           <van-col span="8" style="text-align: center;">
             <van-button plain class="app-menu-color" size="small" icon="delete-o" @click="handleDelete(item.id)" style="width: 100%;">删除</van-button>

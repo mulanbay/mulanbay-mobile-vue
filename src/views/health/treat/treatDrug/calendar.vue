@@ -65,10 +65,10 @@
             </van-card>
             <van-row type="flex" justify="center">
               <van-col span="8" style="text-align: center;">
-                <van-button plain class="app-menu-color" size="small" icon="apps-o" :to="{ name:'TreatDrugDetail',params: {treatDrugId:item.treatDrugId,fromPath:'TreatTrug'} }" style="width: 100%;">记录</van-button>
+                <van-button plain class="app-menu-color" size="small" icon="apps-o" :to="{ name:'TreatDrugDetail',params: {treatDrugId:item.treatDrugId} }" style="width: 100%;">记录</van-button>
               </van-col>
               <van-col span="8" style="text-align: center;">
-                <van-button v-if="null==item.occurTime" plain class="app-menu-color" size="small" icon="add-o" :to="{ name:'TreatDrugDetailAdd',params: {treatDrugId:item.treatDrugId} }" style="width: 100%;" >服用</van-button>
+                <van-button v-if="null==item.occurTime" plain class="app-menu-color" size="small" icon="add-o" :to="{ name:'TreatDrugDetailAdd',params: {treatDrugId:item.treatDrugId,r:true} }" style="width: 100%;" >服用</van-button>
                 <van-button v-else disabled plain class="app-menu-color" size="small" icon="add-o" style="width: 100%;" >服用</van-button>
               </van-col>
               <van-col span="8" style="text-align: center;">
@@ -138,7 +138,6 @@ export default {
       //列表上拉的刷新使用
       pushLoading: false,
       finished: false,
-      page:0,
       //数据列表
       dataList:[],
       bussDay:getNowDateString(),
@@ -214,9 +213,8 @@ export default {
     },
     /**重置搜索*/
     resetSearch(){
-      this.pullLoading = false;
+      this.pullLoading = true;
       this.dataList = [];
-      this.page=1;
       this.finished = false;
       this.getDataList();
     },
@@ -262,6 +260,7 @@ export default {
         sortData(this.dataList,'asc');
         //没有分页功能
         this.finished = true;
+        this.pullLoading = false;
       })
     },
     /**服用*/

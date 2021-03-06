@@ -24,7 +24,7 @@
       </van-col>
     </van-row>
     <van-pull-refresh v-model="pullLoading" @refresh="resetSearch">
-      <van-steps direction="vertical" :active="0" inactive-icon="underway">
+      <van-steps direction="vertical" :active="-1" inactive-icon="underway">
         <van-step v-for="(item, index) in dataList" :key="index">
           <van-cell :value="item.date"/>
           <van-card

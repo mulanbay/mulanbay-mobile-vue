@@ -120,7 +120,7 @@ export default {
     next(vm => {
       const r = to.params.r;
       if(true==r){
-        //console.log('来自编辑成功页面，刷新，name:'+from.name);
+        //console.log('来自新增成功页面，刷新，name:'+from.name);
         /**
          * 在beforeRouteEnter时，页面还没有渲染，新进入组件还没有被创建，无法获取this实例
          * 通过“vm”访问组件实例`,可以通过vm.name去访问data里面的name属性，跟this.name一样效果

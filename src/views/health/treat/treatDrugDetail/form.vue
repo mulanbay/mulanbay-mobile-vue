@@ -63,7 +63,6 @@
       [Switch.name]: Switch,
       [Notify.Component.name]: Notify.Component,
       [Rate.name]: Rate
-
     },
     data() {
       return {
@@ -75,19 +74,26 @@
         //时间窗口
         showOccurTime:false,
         //从哪个页面跳转过来的
-        fromPath:'TreadTrugDetail'
+        fromPath:'TreadTrug',
+        //回调是否要刷新
+        r:undefined
       };
     },
     created() {
       const id = this.$route.params.id;
+      this.r = this.$route.params.r;
       if(id==null){
         this.reset();
         this.form.treatDrugId = this.$route.params.treatDrugId;
-        this.fromPath = this.$route.params.fromPath;
       }else{
         this.title="修改";
         this.loadTreatDrugDetail(id);
       }
+    },
+    beforeRouteEnter(to, from, next) {
+      next(vm => {
+        vm.fromPath = from.name;
+      })
     },
     methods: {
       /**时间选择确定*/
@@ -119,24 +125,12 @@
         if (this.form.id != undefined) {
           updateTreatDrugDetail(this.form).then(response => {
             Notify({ type: 'success', message: '修改成功' });
-            this.$router.push({ name: 'TreatDrugDetail', params: { }})
+            this.$router.push({ name: this.fromPath, params: { r: this.r }});
           });
         } else {
           createTreatDrugDetail(this.form).then(response => {
             Notify({ type: 'success', message: '新增成功' });
-            switch(this.fromPath){
-              case 'TreatDrugDetail':
-                //需要刷新
-                this.$router.push({ name: 'TreatDrugDetail', params: { r: true }});
-                break;
-              case 'TreatDrugCalendar':
-                //需要刷新
-                this.$router.push({ name: 'TreatDrugCalendar', params: { r: true }});
-                break;  
-              default:
-                //不需要刷新
-                this.$router.back();
-            }
+            this.$router.push({ name: this.fromPath, params: { r: this.r }});
           });
         }
       },

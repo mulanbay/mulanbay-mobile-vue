@@ -286,7 +286,7 @@ export const constantRouterMap = [
 			  path: '/health/treat/treatDrugCalendar',
 			  name: 'TreatDrugCalendar',
 			  component: () => import('@/views/health/treat/treatDrug/calendar'),
-			  meta: { title: '用药日历', keepAlive: false }
+			  meta: { title: '用药日历', keepAlive: true }
 			},
       {
         path: '/health/treat/treatDrug/:treatDrugId/detail',

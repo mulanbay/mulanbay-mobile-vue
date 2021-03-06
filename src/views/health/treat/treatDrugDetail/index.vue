@@ -31,7 +31,7 @@
           <template #left>
 
           </template>
-          <van-cell center is-link :to="{ name:'TreatDrugDetailEdit',params: {id:item.id} }">
+          <van-cell center is-link :to="{ name:'TreatDrugDetailEdit',params: {id:item.id,r:true} }">
             <!-- 使用 title 插槽来自定义标题 -->
             <template #icon>
               <svg-icon icon-class="drug" className="icon-list" />
@@ -52,7 +52,7 @@
       </van-cell-group>
       </van-list>
     </van-pull-refresh>
-    <van-button round block type="primary" class="btn-block" :to="{ name:'TreatDrugDetailAdd',params: {treatTrugId:para.treatDrugId,fromPath:'TreatTrug'} }" >
+    <van-button round block type="primary" class="btn-block" :to="{ name:'TreatDrugDetailAdd',params: {treatTrugId:para.treatDrugId,r:true} }" >
         新增
     </van-button>
     <!--回到顶部-->
