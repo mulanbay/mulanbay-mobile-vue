@@ -5,7 +5,12 @@
         <span slot="topText" class="top-text">我的日历</span>
     </top-bar>
     <!--日期选择-->
-    <van-cell title="选择日期" :value="startDate" @click="showCalendar = true" />
+    <van-cell :value="startDate" @click="showCalendar = true" >
+      <template #title>
+        <span class="custom-title">选择日期</span>
+        <van-tag type="primary" round v-if="bussDayTitle!=null">{{bussDayTitle}}</van-tag>
+      </template>
+    </van-cell>
     <van-calendar v-model="showCalendar" :show-confirm="true" @confirm="onConfirmDate" :min-date="calendarMinDate"/>
     <van-row type="flex" justify="center">
       <van-col span="8" style="text-align: center;">
@@ -19,56 +24,52 @@
       </van-col>
     </van-row>
     <van-pull-refresh v-model="pullLoading" @refresh="resetSearch">
-      <van-list
-        v-model="pushLoading"
-        :finished="finished"
-        finished-text="没有更多了"
-        :offset="10"
-      >
-      <van-cell-group v-for="(item, index) in dataList" :key="index" >
-        <van-swipe-cell>
-          <van-cell center is-link @click="showCalendarContent(item)">
-            <!-- 使用 title 插槽来自定义标题 -->
-            <template #icon>
-              <svg-icon icon-class="calendar" className="icon-list" />
-            </template>
+      <van-steps direction="vertical" :active="0" inactive-icon="underway">
+        <van-step v-for="(item, index) in dataList" :key="index">
+          <van-cell :value="item.date"/>
+          <van-card
+            :tag="item.sourceTypeName">
             <template #title>
-              <span class="custom-cell-title">{{item.title}}</span>
+              <svg-icon icon-class="title"/>
+              {{item.title}}
             </template>
-            <template #default>
-              <span class="custom-cell-title">延迟次数:{{item.delayCounts}}</span>
+            <template #desc>
+              </br>
+              <svg-icon icon-class="content"/>
+              {{item.content}}
+              </br>
+              <svg-icon icon-class="item"/>
+              <span v-if="item.period!=null">
+                {{item.periodName}}
+                <span v-if="item.periodValues!=null&&item.periodValues!=''">
+                  <van-tag type="primary" round>{{item.periodValues}}</van-tag>
+                </span>
+              </span>
+              </br>
+              <svg-icon icon-class="item"/>
+              延迟:
+              <van-tag type="primary" round>{{item.delayCounts}}</van-tag>
+              次
             </template>
-          </van-cell>
-          <template #right>
-            <van-button square type="danger" text="删除"  @click="handleDelete(item.id)" />
-            <van-button square type="primary" text="完成" v-if="'ONCE'==item.period" @click="handleFinish(item.id)"/>
-          </template>
-        </van-swipe-cell>
-        <van-cell center class="custom-cell" title="日历时间">
-          <template #default>
-            <span class="custom-cell-title">
-            {{formatBussDay(item)}}
-            </span>
-          </template>
-        </van-cell>
-        <van-cell center class="custom-cell" title="失效时间">
-          <template #default>
-            <span class="custom-cell-title">{{item.expireTime}}</span>
-          </template>
-        </van-cell>
-        <van-cell center class="custom-cell" title="创建时间">
-          <template #default>
-            <span class="custom-cell-title">{{item.createdTime}}</span>
-          </template>
-        </van-cell>
-        <van-cell center class="custom-cell" title="行程来源">
-          <template #default>
-            <span class="custom-cell-title">{{item.sourceTypeName}}</span>
-          </template>
-        </van-cell>
-        <van-cell center :value="item.content" value-class="desc-class" />
-      </van-cell-group>
-      </van-list>
+            <template #thumb>
+              <svg-icon :icon-class="item.iconClass" className="icon-card" />
+            </template>
+          </van-card>
+          <van-row type="flex" justify="center">
+            <van-col span="8" style="text-align: center;">
+              <van-button plain class="app-menu-color" size="small" icon="info-o" @click="showCalendarContent(item)" style="width: 100%;">详情</van-button>
+            </van-col>
+            <van-col span="8" style="text-align: center;">
+              <van-button v-if="'ONCE'==item.period" plain class="app-menu-color" size="small" icon="close" @click="handleFinish(item.id)" style="width: 100%;" >关闭</van-button>
+              <van-button v-else disabled plain class="app-menu-color" size="small" icon="close" @click="handleFinish(item.id)" style="width: 100%;" >关闭</van-button>
+            </van-col>
+            <van-col span="8" style="text-align: center;">
+              <van-button v-if="item.id>0" plain class="app-menu-color" size="small" icon="delete-o" @click="handleDelete(item.id)" style="width: 100%;">删除</van-button>
+              <van-button v-else disabled plain class="app-menu-color" size="small" icon="delete-o" @click="handleDelete(item.id)" style="width: 100%;">删除</van-button>
+            </van-col>
+          </van-row>
+        </van-step>
+      </van-steps>
     </van-pull-refresh>
     <van-button round block type="primary" class="btn-block" @click="handleSendToMe" >
         发送给我
@@ -81,16 +82,18 @@
     <!--日历内容-->
     <van-popup v-model="showContent" position="bottom">
       <van-divider :style="{ color: '#009999', borderColor: '#009999' }">日历内容</van-divider>
-      <van-cell center :value="content" value-class="desc-class" icon="info" />
-      <span v-if="expireTimes>0">
+      <van-cell title="开始时间" :value="form.bussDay" icon="info-o"/>
+      <van-cell title="过期时间" :value="form.expireTime" icon="info-o"/>
+      <van-cell center :value="form.content" value-class="desc-class" />
+      <span v-if="form.expireTimes>0">
       <van-cell center class="custom-cell" title="剩余时间">
         <template #default>
-          <van-count-down :time="expireTimes" format="DD 天 HH 时 mm 分 ss 秒" />
+          <van-count-down :time="form.expireTimes" format="DD 天 HH 时 mm 分 ss 秒" />
         </template>
       </van-cell>
       </span>
       <span v-else>
-        <van-cell center :value="'已经过去:'+pastedDays" value-class="desc-class" />
+        <van-cell center :value="'已经过去:'+form.pastedDays" value-class="desc-class" />
       </span>
       </br>
       <van-button round block type="primary" class="app-color" @click="showContent=false" >
@@ -102,9 +105,10 @@
 
 <script>
   import { getList,sendCalendarMessage,finishUserCalendar,deleteUserCalendar } from '@/api/data/userCalendar'
-  import { Col,Row,List,PullRefresh,Tag,Calendar,SwipeCell,Notify,Dialog,Popup,CountDown,Divider  } from 'vant';
+  import { Col,Row,List,PullRefresh,Tag,Calendar,SwipeCell,Notify,Dialog,Popup,CountDown,Divider,Card,Step, Steps  } from 'vant';
   import TopBar from "components/TopBar";
   import { getNowDateString,getFormatDate,getDayByDate,formatDays,tillNowDays } from '@/utils/datetime'
+  import { getBussIconClass,sortData  } from '@/utils/index'
 
 export default {
   name:'UserCalendar',
@@ -122,7 +126,9 @@ export default {
     [Popup.name]: Popup,
     [CountDown.name]: CountDown,
     [Divider.name]: Divider,
-
+    [Card.name]: Card,
+    [Step.name]: Step,
+    [Steps.name]: Steps
   },
   data() {
     return {
@@ -132,21 +138,23 @@ export default {
       pushLoading: false,
       finished: false,
       page:0,
+      //数据列表
       dataList:[],
       startDate:getNowDateString(),
       //时间选择
       showCalendar:false,
       //展示内容
+      form:{},
       showContent:false,
-      expireTimes:0,
-      pastedDays:undefined,
-      content:undefined
+      //日期标题
+      bussDayTitle:undefined
     }
   },
   computed: {
 
   },
   mounted() {
+    this.setBussDayTitle();
     this.getDataList();
   },
   methods: {
@@ -161,16 +169,38 @@ export default {
       }
       return s;
     },
+    /** 设置日期标题 */
+    setBussDayTitle(){
+      const now = new Date(Date.parse(getNowDateString().replace(/-/g,"/")));
+      const bd = new Date(Date.parse(this.startDate.replace(/-/g,"/")));
+      const days = tillNowDays(now,bd);
+      switch(days){
+        case 0:
+          this.bussDayTitle='今天';
+          break;
+        case 1:
+          this.bussDayTitle='明天';
+          break;
+        case -1:
+          this.bussDayTitle='昨天';
+          break;
+        default:
+          if(days>0){
+            this.bussDayTitle=days+'天后';
+          }else{
+            this.bussDayTitle=(0-days)+'天前';
+          }
+      }
+    },
     /**日历内容展示*/
     showCalendarContent(item){
       this.showContent = true;
-      this.content = item.content;
-      this.expireTimes=0;
+      this.form = item;
       let days = tillNowDays(null,item.expireTime);
       if(days<0){
-        this.pastedDays = formatDays(0-days);
+        this.form.pastedDays = formatDays(0-days);
       }else{
-        this.expireTimes = days*24*60*60*1000;
+        this.form.expireTimes = days*24*60*60*1000;
       }
 
     },
@@ -178,6 +208,7 @@ export default {
     onConfirmDate(date){
       this.startDate = getFormatDate(date,'yyyy-MM-dd');
       this.showCalendar = false;
+      this.setBussDayTitle();
       this.getDataList();
     },
     /**时间快速选择*/
@@ -187,6 +218,7 @@ export default {
       }else{
         this.startDate = getDayByDate(n,this.startDate);
       }
+      this.setBussDayTitle();
       this.getDataList();
     },
     /**重置搜索*/
@@ -215,7 +247,21 @@ export default {
       this.finished = false;
       getList(para).then(response => {
         this.pushLoading = false;
-        this.dataList = response;
+        this.dataList=new Array();
+        let datas = response;
+        const n=datas.length;
+        //倒序
+        for (var i = 0; i <n; i++){
+          let row = datas[i];
+          row.iconClass=getBussIconClass(row.sourceType);
+          if(row.allDay==true){
+            row.date = '全天';
+          }else{
+            row.date = row.bussDay.substr(11,5);
+          }
+          this.dataList.push(row);
+        }
+        sortData(this.dataList,'asc');
         //没有分页功能
         this.finished = true;
       })

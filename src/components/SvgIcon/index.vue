@@ -73,6 +73,13 @@ export default {
   color: #009999;
 }
 
+/**卡片主题样式*/
+.icon-card {
+  width: 60px;
+  height: 88px;
+  color: #009999;
+}
+
 /**列表中样式*/
 .icon-list {
   width: 20px;

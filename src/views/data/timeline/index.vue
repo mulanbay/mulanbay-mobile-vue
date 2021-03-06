@@ -23,9 +23,17 @@
       </van-col>
     </van-row>
     </br>
-    <van-steps direction="vertical" :active="0" >
-      <van-step v-for="(item, index) in dataList" :key="index" style="height: 30px;">
-        <h5>{{item.date}} {{item.title}}</h5>
+    <van-steps direction="vertical" :active="0" inactive-icon="underway">
+      <van-step v-for="(item, index) in dataList" :key="index">
+        <van-cell :value="item.date"/>
+        <van-card
+          :tag="item.behaviorTypeName"
+          :title="item.title"
+          :desc="item.desc">
+          <template #thumb>
+            <svg-icon :icon-class="item.iconClass" className="icon-card" />
+          </template>
+        </van-card>
       </van-step>
     </van-steps>
     <!--回到顶部-->
@@ -40,7 +48,8 @@
   import { getUserBehaviorStat } from '@/api/behavior/userBehavior'
   import { getUserOperationConfigStat } from '@/api/behavior/userOperationConfig'
   import { getDay,getNowDateString,getFormatDate,getDayByDate  } from '@/utils/datetime'
-  import { Tab, Tabs,Step, Steps,Col,Row,Calendar,Toast } from 'vant';
+  import { getBussIconClass,sortData  } from '@/utils/index'
+  import { Tab, Tabs,Step, Steps,Col,Row,Calendar,Toast,Card } from 'vant';
   import TopBar from "components/TopBar";
 
 export default {
@@ -54,7 +63,8 @@ export default {
     [Calendar.name]: Calendar,
     [Col.name]: Col,
     [Row.name]: Row,
-    [Toast.name]: Toast
+    [Toast.name]: Toast,
+    [Card.name]: Card
   },
   data() {
     return {
@@ -119,9 +129,15 @@ export default {
         const n=ds.length;
         //倒序
         for (var i = 0; i <n; i++){
-          this.dataList.push({title:ds[i].name,date:ds[i].date.substr(11,5)});
+          let row = {
+            title:ds[i].name,
+            date:ds[i].date.substr(11,5),
+            iconClass:getBussIconClass(ds[i].behaviorType),
+            behaviorTypeName:ds[i].behaviorTypeName
+          };
+          this.dataList.push(row);
         }
-        this.sortData(this.dataList);
+        sortData(this.dataList,'asc');
       })
     },
     /**获取操作数据列表*/
@@ -142,25 +158,18 @@ export default {
           const ops = ds[i].operations;
           for (var j = 0; j < ops.length; j++){
             const t = '['+ds[i].title+']'+ops[j].content;
-            this.dataList.push({title:t,date:ops[j].occurTime.substr(11,5)});
+            let row = {
+              title:t,
+              date:ops[j].occurTime.substr(11,5),
+              desc:ops[j].content,
+              iconClass:getBussIconClass(ops[j].behaviorType),
+              behaviorTypeName:ops[j].behaviorTypeName
+            };
+            this.dataList.push(row);
           }
         }
-        this.sortData(this.dataList);
+        sortData(this.dataList,'asc');
       })
-    },
-    /**数据排序*/
-    sortData(datas){
-      //冒泡排序
-      for(let j=0;j<datas.length-1;j++){
-      //两两比较，如果前一个比后一个大，则交换位置。
-       for(let i=0;i<datas.length-1-j;i++){
-            if(datas[i].date<datas[i+1].date){
-                let temp = datas[i];
-                datas[i] = datas[i+1];
-                datas[i+1] = temp;
-            }
-        }
-      }
     }
   }
 }

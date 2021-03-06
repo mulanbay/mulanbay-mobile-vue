@@ -198,20 +198,21 @@ export default {
         response => {
           //组装chart数据
           this.chart.resize();
-          if(chartType=='PIE'){
-            createPieChart(response,this.chart);
-            return;
-          }else if(chartType=='LINE'){
-            createLineChart(response,this.chart);
-            return;
-          }else if(chartType=='BAR'){
-            createBarChart(response,this.chart);
-            return;
-          }else if(chartType=='MIX_LINE_BAR'){
-            createMixLineBarChart(response,this.chart);
-            return;
-          }else{
-            Notify({ type: 'warning', message: '暂未支持的图表格式:'+chartType });
+          switch(chartType){
+            case 'PIE':
+              createPieChart(response,this.chart);
+              break;
+            case 'LINE':
+              createLineChart(response,this.chart);
+              break;
+            case 'BAR':
+              createBarChart(response,this.chart);
+              break;
+            case 'MIX_LINE_BAR':
+              createMixLineBarChart(response,this.chart);
+              break;
+            default:
+              Notify({ type: 'warning', message: '暂未支持的图表格式:'+chartType });
           }
         }
       );

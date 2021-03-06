@@ -169,3 +169,37 @@ export function getPercent(num1,num2) {
 	}
   return (Math.round(num1 / num2 * 10000) / 100.00);
 }
+
+/**
+ * 业务类型的图标
+ * @param {Object} bussType
+ */
+export function getBussIconClass(bussType) {
+  let b = bussType.toLowerCase();
+  const sa = b.split("_"); //分割
+  return sa[0];
+}
+
+/**
+ * 数据排序
+ * @param {Object} datas
+ * @param {Object} type:asc升序,desc降序
+ */
+export function sortData(datas,type){
+  //冒泡排序
+  for(let j=0;j<datas.length-1;j++){
+  //两两比较，如果前一个比后一个大，则交换位置。
+   for(let i=0;i<datas.length-1-j;i++){
+      if('desc'==type&&datas[i].date<datas[i+1].date){
+        let temp = datas[i];
+        datas[i] = datas[i+1];
+        datas[i+1] = temp;
+      }
+      if('asc'==type&&datas[i].date>datas[i+1].date){
+        let temp = datas[i];
+        datas[i] = datas[i+1];
+        datas[i+1] = temp;
+      }
+    }
+  }
+}
