@@ -282,6 +282,12 @@ export const constantRouterMap = [
         component: () => import('@/views/health/treat/treatDrug/index'),
         meta: { title: '用药管理', keepAlive: true }
       },
+			{
+			  path: '/health/treat/treatDrugCalendar',
+			  name: 'TreatDrugCalendar',
+			  component: () => import('@/views/health/treat/treatDrug/calendar'),
+			  meta: { title: '用药日历', keepAlive: false }
+			},
       {
         path: '/health/treat/treatDrug/:treatDrugId/detail',
         name: 'TreatDrugDetail',

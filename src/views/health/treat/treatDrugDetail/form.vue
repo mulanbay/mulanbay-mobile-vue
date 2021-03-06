@@ -124,14 +124,19 @@
         } else {
           createTreatDrugDetail(this.form).then(response => {
             Notify({ type: 'success', message: '新增成功' });
-            if(this.fromPath=='TreatDrugDetail'){
-              //需要刷新
-              this.$router.push({ name: 'TreatDrugDetail', params: { r: true }})
-            }else{
-              //不需要刷新
-              this.$router.back();
+            switch(this.fromPath){
+              case 'TreatDrugDetail':
+                //需要刷新
+                this.$router.push({ name: 'TreatDrugDetail', params: { r: true }});
+                break;
+              case 'TreatDrugCalendar':
+                //需要刷新
+                this.$router.push({ name: 'TreatDrugCalendar', params: { r: true }});
+                break;  
+              default:
+                //不需要刷新
+                this.$router.back();
             }
-
           });
         }
       },

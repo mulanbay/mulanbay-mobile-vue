@@ -63,3 +63,11 @@ export function getTreatDrugCategoryTree(groupField,needRoot) {
   })
 }
 
+export function calendar(query) {
+  return request({
+    url: '/treatDrug/calendar',
+    method: 'get',
+    params: query
+  })
+}
+

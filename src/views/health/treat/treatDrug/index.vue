@@ -16,6 +16,9 @@
         <slot name="share" >
           <van-icon name="search" size="25px" color="#099" @click="handleSearch" slot="leftIcon"/>
         </slot>
+        <slot name="share" >
+          <van-icon name="calendar-o" size="25px" color="#099" @click="handleCalendar" slot="leftIcon"/>
+        </slot>
       </template>
     </van-search>
     <van-pull-refresh v-model="pullLoading" @refresh="resetSearch">
@@ -141,6 +144,10 @@ export default {
       }else{
         return false;
       }
+    },
+    /**用药日历*/
+    handleCalendar(){
+      this.$router.push({ name: 'TreatDrugCalendar', params: { }});
     },
     /**搜索*/
     handleSearch(){
