@@ -33,6 +33,12 @@ body .app {
   font-weight:normal;
 }
 
+//卡片的标题
+.card-title {
+  color: #200000;
+  font-weight:bolder;
+}
+
 /* 将button按钮固定在页面底部 */
 .btn-block{
   position: fixed;
@@ -73,4 +79,3 @@ body .app {
 .custom-cell {
   height: 35px;
 }
-

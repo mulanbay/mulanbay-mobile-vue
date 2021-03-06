@@ -41,7 +41,9 @@
               :tag="item.tag">
               <template #title>
                 <svg-icon icon-class="title"/>
-                {{item.name}}
+                <span class="card-title">
+                  {{item.name}}
+                </span>
               </template>
               <template #desc>
                 </br>

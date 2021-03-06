@@ -27,9 +27,18 @@
       <van-step v-for="(item, index) in dataList" :key="index">
         <van-cell :value="item.date"/>
         <van-card
-          :tag="item.behaviorTypeName"
-          :title="item.title"
-          :desc="item.desc">
+          :tag="item.behaviorTypeName">
+          <template #title>
+            <svg-icon icon-class="title"/>
+            <span class="card-title">
+              {{item.title}}
+            </span>
+          </template>
+          <template #desc>
+            </br>
+            <svg-icon icon-class="content"/>
+            {{item.desc}}
+          </template>
           <template #thumb>
             <svg-icon :icon-class="item.iconClass" className="icon-card" />
           </template>

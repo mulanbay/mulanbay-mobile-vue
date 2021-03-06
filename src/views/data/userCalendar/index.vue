@@ -31,7 +31,9 @@
             :tag="item.sourceTypeName">
             <template #title>
               <svg-icon icon-class="title"/>
-              {{item.title}}
+              <span class="card-title">
+                {{item.title}}
+              </span>
             </template>
             <template #desc>
               </br>
