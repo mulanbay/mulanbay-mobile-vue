@@ -40,16 +40,11 @@
               </br>
               <svg-icon icon-class="item"/>
               <span v-if="item.period!=null">
-                {{item.periodName}}
-                <span v-if="item.periodValues!=null&&item.periodValues!=''">
-                  <van-tag type="primary" round>{{item.periodValues}}</van-tag>
-                </span>
+                {{item.periodName}}{{item.periodValues}}
               </span>
               </br>
               <svg-icon icon-class="item"/>
-              延迟:
-              <van-tag type="primary" round>{{item.delayCounts}}</van-tag>
-              次
+              延迟:{{item.delayCounts}}次
             </template>
             <template #thumb>
               <svg-icon :icon-class="item.iconClass" className="icon-card" />

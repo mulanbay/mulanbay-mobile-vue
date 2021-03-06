@@ -49,17 +49,13 @@
                   针对疾病:{{item.disease}}
                 </br>
                 <svg-icon icon-class="item"/>
-                {{ item.perDay }}天
-                <van-tag type="primary" round>{{item.perTimes}}</van-tag>
-                次
+                {{ item.perDay }}天{{item.perTimes}}次
                 </br>
                 <svg-icon icon-class="item"/>
-                每次
-                <van-tag type="primary" round>{{item.ec}}</van-tag>
-                {{ item.eu }}
+                每次{{item.ec}}{{ item.eu }}
                 </br>
                 <svg-icon icon-class="item"/>
-                <van-tag type="primary" round>{{item.useWay}}</van-tag>
+                {{item.useWay}}
               </template>
               <template #thumb>
                 <svg-icon icon-class="health" className="icon-card" />
