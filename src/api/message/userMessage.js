@@ -27,3 +27,11 @@ export function resendUserMessage(id) {
     params: { id }
   })
 }
+
+export function getUserMessageByUser(id) {
+  return request({
+    url: '/userMessage/getByUser',
+    method: 'get',
+    params: { id }
+  })
+}

@@ -84,6 +84,7 @@
       <van-divider :style="{ color: '#009999', borderColor: '#009999' }">日历内容</van-divider>
       <van-cell title="开始时间" :value="form.bussDay" icon="info-o"/>
       <van-cell title="过期时间" :value="form.expireTime" icon="info-o"/>
+      <van-cell center v-if="form.sourceMsg!=null" :value="form.sourceMsg" value-class="desc-class"/>
       <van-cell center :value="form.content" value-class="desc-class" />
       <span v-if="form.expireTimes>0">
       <van-cell center class="custom-cell" title="剩余时间">
@@ -105,6 +106,7 @@
 
 <script>
   import { getList,sendCalendarMessage,finishUserCalendar,deleteUserCalendar } from '@/api/data/userCalendar'
+  import {getUserMessageByUser} from "@/api/message/userMessage";
   import { Col,Row,List,PullRefresh,Tag,Calendar,SwipeCell,Notify,Dialog,Popup,CountDown,Divider,Card,Step, Steps  } from 'vant';
   import TopBar from "components/TopBar";
   import { getNowDateString,getFormatDate,getDayByDate,formatDays,tillNowDays } from '@/utils/datetime'
@@ -202,7 +204,18 @@ export default {
       }else{
         this.form.expireTimes = days*24*60*60*1000;
       }
-
+      if(this.form.messageId!=null){
+        getUserMessageByUser(this.form.messageId).then(
+          response => {
+            if(response!=null){
+              let sourceMsg ='来源:'+response.content+'['+response.title+']';
+              this.form.sourceMsg=sourceMsg;
+              //需要刷新显示
+              this.$forceUpdate();
+            }
+          }
+        );
+      }
     },
     /**时间选择确定*/
     onConfirmDate(date){
