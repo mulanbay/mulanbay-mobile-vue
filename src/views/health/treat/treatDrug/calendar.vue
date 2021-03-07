@@ -85,7 +85,7 @@
       </template>
     </van-pull-refresh>
     <van-goods-action>
-      <van-goods-action-icon icon="close" text="未服用" :badge="unTakes" />
+      <van-goods-action-icon icon="close" text="未服用" :badge="unTakes"/>
       <van-goods-action-icon icon="passed" text="已服用" :badge="takes"/>
       <van-goods-action-icon icon="question-o" text="未匹配" :badge="unMatchs"/>
       <van-goods-action-icon icon="cart-o" text="药品数" :badge="drugs"/>
@@ -243,7 +243,7 @@ export default {
             if(dt.occurTime==null){
               //dt.occurTimeStr = '未用药';
               this.unTakes++;
-              dt.tag = '未用药';
+              dt.tag = '未服用';
             }else{
               dt.occurTimeStr = dt.occurTime.substr(11,5);
               this.takes++;
