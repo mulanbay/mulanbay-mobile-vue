@@ -8,6 +8,15 @@ export function fetchList(query) {
   })
 }
 
+export function getList(query) {
+  return request({
+    url: '/budgetSnapshot/getList',
+    method: 'get',
+    params: query
+  })
+}
+
+
 export function stat(query) {
   return request({
     url: '/budgetSnapshot/stat',

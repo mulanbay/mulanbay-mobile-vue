@@ -32,41 +32,9 @@
       </van-cell-group>
       <van-divider :style="{ color: '#009999', borderColor: '#009999' }">消费与收入分析</van-divider>
       <!-- 消费 -->
-      <van-cell-group>
-        <van-cell center :value="consumeTitle" value-class="desc-class">
-          <template #right-icon>
-            <svg-icon icon-class="chart" className="icon-list" @click="consumeStat"/>
-          </template>
-        </van-cell>
-        <van-cell v-for="(item, index) in consumeDataList" :key="index" center class="custom-cell">
-          <!-- 使用 title 插槽来自定义标题 -->
-          <template #icon>
-            <img src="@/assets/image/consume.png" width="20px" height="20px">
-          </template>
-          <template #title>
-            <span class="custom-cell-title">{{item.name}}</span>
-          </template>
-          <template #default>
-            <span class="custom-cell-title">{{formatMoney(item.value)}}</span>
-          </template>
-        </van-cell>
-      </van-cell-group>
+      <pie-chart :chartData="consumeChartData"/>
       <!-- 收入 -->
-      <van-cell-group>
-        <van-cell center :value="incomeTitle" value-class="desc-class"/>
-        <van-cell v-for="(item, index) in incomeDataList" :key="index" center class="custom-cell">
-          <!-- 使用 title 插槽来自定义标题 -->
-          <template #icon>
-            <img src="@/assets/image/income.png" width="20px" height="20px">
-          </template>
-          <template #title>
-            <span class="custom-cell-title">{{item.name}}</span>
-          </template>
-          <template #default>
-            <span class="custom-cell-title">{{formatMoney(item.value)}}</span>
-          </template>
-        </van-cell>
-      </van-cell-group>
+      <pie-chart :chartData="incomeChartData"/>
     </van-pull-refresh>
     <!--回到顶部-->
     <back-to-top bottom="60px" right="10px">
@@ -94,10 +62,12 @@
   import { Col,Row,PullRefresh,Dialog,Tab,Tabs,Divider,DatetimePicker,Popup,Notify,Tag,Icon  } from 'vant';
   import TopBar from "components/TopBar";
   import { getNowDateString,getFormatDate,getDayByDate,getMonthDateRange } from '@/utils/datetime'
+  import PieChart from "../../chart/pieChart";
 
 export default {
   name:'BudgetLogStat',
   components: {
+    'pie-chart':PieChart,
     TopBar,
     [DatetimePicker.name]: DatetimePicker,
     [Popup.name]: Popup,
@@ -129,7 +99,11 @@ export default {
       //时间窗口
       showDate:false,
       //查询运营日的格式
-      bussDayFormat:'yyyy-MM'
+      bussDayFormat:'yyyy-MM',
+      //消费图表数据
+      consumeChartData:{},
+      //收入图表数据
+      incomeChartData:{}
     }
   },
   computed: {
@@ -237,8 +211,7 @@ export default {
       // 请求接口数据
       const para = this.getDatePara();
       statWithTreat(para).then(response => {
-        this.consumeDataList = response.detailData[0].data;
-        this.consumeTitle = response.title+'('+response.subTitle+')';
+        this.consumeChartData = response;
       }).catch(() => {
       });
     },
@@ -247,8 +220,7 @@ export default {
       // 请求接口数据
       const para = this.getDatePara();
       getIncomeStat(para).then(response => {
-        this.incomeDataList = response.detailData[0].data;
-        this.incomeTitle = response.title+'('+response.subTitle+')';
+        this.incomeChartData = response;
       }).catch(() => {
       });
     }
