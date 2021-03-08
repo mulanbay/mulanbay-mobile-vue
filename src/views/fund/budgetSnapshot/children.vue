@@ -2,7 +2,7 @@
 <template>
   <div>
     <top-bar>
-        <span slot="topText" class="top-text">预算快照</span>
+        <span slot="topText" class="top-text">预算子列表</span>
     </top-bar>
     <van-pull-refresh v-model="pullLoading" @refresh="resetSearch">
       <van-list
@@ -11,24 +11,32 @@
         finished-text="没有更多了"
         :offset="10"
       >
+      <!-- 统计数据 -->
+      <van-divider :style="{ color: '#009999', borderColor: '#009999' }">{{title}}</van-divider>
+      <van-cell title="数据条数" :value="statData.count+'条'" />
+      <van-cell title="预算总计" :value="formatMoney(statData.budgetAmount)"  />
+      <van-cell title="实际花费" :value="formatMoney(statData.cpPaidAmount)" />
+      <van-cell title="花费/预算比例" :value="statData.rate.toFixed(0)+'%'"  />
+
+      <van-divider :style="{ color: '#009999', borderColor: '#009999' }">数据列表</van-divider>
+      <!-- 列表数据 -->
       <van-cell-group v-for="(item, index) in dataList" :key="index" >
-        <van-cell center is-link click="showChildren">
+        <van-cell center>
           <!-- 使用 title 插槽来自定义标题 -->
           <template #icon>
             <svg-icon icon-class="budget" className="icon-list" />
           </template>
           <template #title>
-            <span class="custom-cell-title">{{item.name}}</span>
-            <van-tag type="danger" v-if="item.pp>100">超支</van-tag>
+            <span class="custom-cell-title">{{item.bussKey}}</span>
+            <van-tag type="danger" v-if="item.rate>100">超支</van-tag>
           </template>
           <template #default>
-            <span class="custom-cell-title">{{item.pp+'%'}}</span>
+            <span class="custom-cell-title">{{ parseInt(item.rate.toFixed(0))+'%'}}</span>
           </template>
         </van-cell>
         <van-cell center class="custom-cell" title="预算金额">
           <template #default>
             <span class="custom-cell-title">{{formatMoney(item.amount)}}</span>
-            <van-tag type="primary" v-if="item.n>1">{{ '×'+item.n }}</van-tag>
           </template>
         </van-cell>
         <van-cell center class="custom-cell" title="预算类型">
@@ -65,21 +73,23 @@
 </template>
 
 <script>
-  import { getList as getBudgetSnapshotData } from '@/api/fund/budgetSnapshot'
-  import { Col,Row,List,PullRefresh,Tag } from 'vant';
+  import { getChildren } from '@/api/fund/budgetSnapshot'
+  import { Col,Row,List,PullRefresh,Tag,Icon,Divider } from 'vant';
   import TopBar from "components/TopBar";
   import { getNowDateString,getFormatDate,getDayByDate } from '@/utils/datetime'
   import { getPercent } from '@/utils/index'
 
 export default {
-  name:'BudgetSnapshot',
+  name:'BudgetSnapshotChildren',
   components: {
     TopBar,
     [Col.name]: Col,
     [Row.name]: Row,
     [List.name]: List,
     [PullRefresh.name]: PullRefresh,
-    [Tag.name]: Tag
+    [Tag.name]: Tag,
+    [Icon.name]: Icon,
+    [Divider.name]: Divider
   },
   data() {
     return {
@@ -89,16 +99,26 @@ export default {
       pushLoading: false,
       finished: false,
       page:0,
+      //统计信息
+      statData:{
+        budgetAmount:0,
+        cpPaidAmount:0,
+        bussKey:undefined,
+        rate:0,
+        name:undefined,
+        count:0
+      },
       dataList:[],
-      //预算快照日志编号
-      budgetLogId:undefined
+      title:'',
+      //预算快照日志
+      snapshotId:undefined
     }
   },
   computed: {
 
   },
   mounted() {
-    this.budgetLogId = this.$route.params.budgetLogId;
+    this.snapshotId = this.$route.params.snapshotId;
     this.getDataList();
   },
   methods: {
@@ -111,35 +131,33 @@ export default {
       this.getDataList();
     },
     /**展示子类*/
-    showChildren(){
-      alert('aaa');
+    showChildren(snapshotId){
+      alert(snapshotId);
     },
     /**获取数据列表*/
     getDataList() {
       this.pushLoading = true;
       // 请求接口数据
       const para = {
-        budgetLogId:this.budgetLogId
+        snapshotId:this.snapshotId,
+        needChart:false
       }
-      getBudgetSnapshotData(para).then(response => {
+      getChildren(para).then(response => {
         this.pushLoading = false;
-        this.dataList = new Array();
-        let datas = response;
-        const n = datas.length;
-        for(let i=0;i<n;i++){
-          let n=1;
-          if(datas[i].children!=null){
-            n = datas[i].children.length;
-          }
-          datas[i].n = n;
-          if(datas[i].cpPaidAmount==null){
-            datas[i].pp = 0;
-          }else{
-            let aiv = getPercent(datas[i].cpPaidAmount,datas[i].amount*n);
-            datas[i].pp = parseInt(aiv.toFixed(0));
-          }
+        let count =0;
+        if(response.children!=null){
+          count =response.children.length;
         }
-        this.dataList = datas;
+        this.statData = {
+          budgetAmount:response.budgetAmount,
+          cpPaidAmount:response.cpPaidAmount,
+          bussKey:response.bussKey,
+          rate:response.rate,
+          name:response.name,
+          count:count
+        }
+        this.title = '['+this.statData.name+']'+this.statData.bussKey+'统计';
+        this.dataList = response.children;
         //没有分页功能
         this.finished = true;
       })

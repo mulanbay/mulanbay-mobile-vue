@@ -105,13 +105,19 @@ export const constantRouterMap = [
       {
         path: '/fund/budget/:budgetLogId/snapshot',
         name: 'BudgetSnapshot',
-        component: () => import('@/views/fund/budget/snapshot'),
+        component: () => import('@/views/fund/budgetSnapshot/snapshot'),
         meta: { title: '预算快照', keepAlive: false }
+      },
+      {
+        path: '/fund/budgetSnapshot/:snapshotId/children',
+        name: 'BudgetSnapshotChildren',
+        component: () => import('@/views/fund/budgetSnapshot/children'),
+        meta: { title: '预算快照子列表', keepAlive: false }
       },
       {
         path: '/fund/budget/:budgetLogId/snapshotConsumeStat',
         name: 'BudgetSnapshotConsumeStat',
-        component: () => import('@/views/fund/budget/snapshotConsumeStat'),
+        component: () => import('@/views/fund/budgetSnapshot/consumeStat'),
         meta: { title: '预算快照消费统计', keepAlive: false }
       },
       {
