@@ -27,30 +27,44 @@
         @load="onLoad"
       >
       <van-cell-group v-for="(item, index) in dataList" :key="index" >
-        <van-swipe-cell>
-          <template #left>
-            <van-button square type="primary" text="以此为模板"  :to="{ name:'BuyRecordAddFromTmp',params: {tmpId:item.id} }"/>
+        <van-card
+          :num="item.amount"
+          :price="item.totalPrice">
+          <template #title>
+            <svg-icon icon-class="title"/>
+            <span class="card-title">
+              {{item.goodsName}}
+            </span>
           </template>
-          <van-cell center is-link :to="{ name:'BuyRecordEdit',params: {id:item.id} }">
-            <!-- 使用 title 插槽来自定义标题 -->
-            <template #icon>
-              <svg-icon icon-class="consume" className="icon-list" />
-            </template>
-            <template #title>
-              <span class="custom-title">{{beautifyDateTime(item.buyDate)}}</span>
-            </template>
-            <template #default>
-              <span class="van-ellipsis">{{formatMoney(item.totalPrice)}}</span>
-            </template>
-          </van-cell>
-          <template #right>
-            <van-button square type="danger" text="删除"  @click="handleDelete(item.id)" />
+          <template #tag>
+            <span v-if="item.secondhand==true">
+              <van-tag type="danger">二手</van-tag>
+            </span>
           </template>
-        </van-swipe-cell>
-        <van-cell center class="custom-cell" title="商品分类" :value="formatGoodsType(item)" />
-        <van-cell center class="custom-cell" title="购买来源" :value="item.buyType.name" />
-        <van-cell center class="custom-cell" title="店铺名称" :value="item.shopName" />
-        <van-cell :value="item.goodsName" value-class="desc-class"/>
+          <template #tags>
+            </br>
+            <van-tag plain type="primary">{{item.paymentName}}</van-tag>
+          </template>
+          <template #desc>
+            </br>
+            </br>
+            <svg-icon icon-class="item"/>
+            <span>
+              {{beautifyDateTime(item.buyDate)}}
+            </span>
+            </br>
+            <svg-icon icon-class="item"/>
+            <span>
+              {{formatGoodsType(item)}}
+            </span>
+            </br>
+            <svg-icon icon-class="item"/>
+              {{item.buyType.name}}
+          </template>
+          <template #thumb>
+            <svg-icon icon-class="buy" className="icon-card" />
+          </template>
+        </van-card>
         <van-row type="flex" justify="center">
           <van-col span="8" style="text-align: center;">
             <van-button plain class="app-menu-color" size="small" icon="add-o" :to="{ name:'BuyRecordAddFromTmp',params: {tmpId:item.id} }" style="width: 100%;">以此为模板</van-button>
@@ -78,7 +92,7 @@
 
 <script>
   import { fetchList,deleteBuyRecord } from '@/api/consume/buyRecord'
-  import { Col,Row,List,PullRefresh,Dialog,SwipeCell,Search,Notify,Tab,Tabs,Icon  } from 'vant';
+  import { Col,Row,List,PullRefresh,Dialog,Search,Notify,Tab,Tabs,Icon,Card,Tag  } from 'vant';
   import TopBar from "components/TopBar";
   import { formatDateDesc } from '@/utils/datetime'
 
@@ -93,8 +107,9 @@ export default {
     [Search.name]: Search,
     [Dialog.Component.name]: Dialog.Component,
     [Notify.Component.name]: Notify.Component,
-    [SwipeCell.name]: SwipeCell,
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Card.name]: Card,
+    [Tag.name]: Tag
   },
   data() {
     return {

@@ -47,6 +47,14 @@
             <van-button square type="danger" text="删除"  @click="handleDelete(item.id)" />
           </template>
         </van-swipe-cell>
+        <van-cell center class="custom-cell" >
+          <template #default>
+            <van-steps :active="item.getUpTime==null ? 0:1 " active-icon="clock-o" >
+              <van-step>{{formatTime(item.sleepTime)}}</van-step>
+              <van-step>{{formatTime(item.getUpTime)}}</van-step>
+            </van-steps>
+          </template>
+        </van-cell>
         <van-cell center class="custom-cell" title="睡眠质量" >
           <template #default>
             <span class="van-ellipsis">
@@ -54,7 +62,6 @@
             </span>
           </template>
         </van-cell>
-        <van-cell center class="custom-cell" title="睡眠时间" :value="formatSleepRange(item)" />
         <van-cell center class="custom-cell" title="睡眠时长" :value="formatSleepTimes(item.totalMinutes)" />
         <van-cell :value="item.remark" value-class="desc-class" />
       </van-cell-group>
@@ -75,7 +82,7 @@
 
 <script>
   import { fetchList,deleteSleep,sleep,getUp } from '@/api/health/body/sleep'
-  import { Col,Row,List,PullRefresh,Tag,Dialog,SwipeCell,Search,Icon,Notify,Rate  } from 'vant';
+  import { Col,Row,List,PullRefresh,Tag,Dialog,SwipeCell,Search,Icon,Notify,Rate,Step, Steps  } from 'vant';
   import TopBar from "components/TopBar";
   import { formatDateDesc,formatSeconds,getNowDateTimeString } from '@/utils/datetime'
 
@@ -93,7 +100,9 @@ export default {
     [Dialog.Component.name]: Dialog.Component,
     [Notify.Component.name]: Notify.Component,
     [SwipeCell.name]: SwipeCell,
-    [Rate.name]: Rate
+    [Rate.name]: Rate,
+    [Step.name]: Step,
+    [Steps.name]: Steps
   },
   data() {
     return {
@@ -136,12 +145,12 @@ export default {
   },
   methods: {
     /**格式睡眠时间*/
-    formatSleepRange(row){
-      let s = row.sleepTime.substr(11,5);
-      if(row.getUpTime!=null){
-        s+='~~'+row.getUpTime.substr(11,5);
+    formatTime(time){
+      if(time==null){
+        return '';
+      }else{
+        return time.substr(11,5);
       }
-      return s;
     },
     formatSleepTimes(minutes){
       return formatSeconds(minutes*60);
