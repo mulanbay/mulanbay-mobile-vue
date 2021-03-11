@@ -24,46 +24,53 @@
         @load="onLoad"
       >
       <van-cell-group v-for="(item, index) in dataList" :key="index" >
-        <van-swipe-cell>
-          <template #left>
-
-          </template>
-          <van-cell center is-link :to="{ name:'SleepEdit',params: {id:item.id} }">
-            <!-- 使用 title 插槽来自定义标题 -->
-            <template #icon>
-              <svg-icon icon-class="sleep" className="icon-list" />
-            </template>
-            <template #title>
-              <span class="custom-title">{{beautifyDate(item.sleepDate)}}</span>
-              <van-tag type="danger" v-if="item.quality<3">差</van-tag>
-            </template>
-            <template #default>
-              <span class="van-ellipsis">
-
-              </span>
-            </template>
-          </van-cell>
-          <template #right>
-            <van-button square type="danger" text="删除"  @click="handleDelete(item.id)" />
-          </template>
-        </van-swipe-cell>
-        <van-cell center class="custom-cell" >
-          <template #default>
-            <van-steps :active="item.getUpTime==null ? 0:1 " active-icon="clock-o" >
-              <van-step>{{formatTime(item.sleepTime)}}</van-step>
-              <van-step>{{formatTime(item.getUpTime)}}</van-step>
-            </van-steps>
-          </template>
-        </van-cell>
-        <van-cell center class="custom-cell" title="睡眠质量" >
-          <template #default>
-            <span class="van-ellipsis">
-              <van-rate v-model="item.quality" :count="5" readonly color="#ffd21e"/>
+        <van-steps direction="vertical" :active="item.getUpTime==null ? 0:2"  active-icon="clock-o" >
+          <van-step>
+            <span style="color: #550000;">
+              {{formatTime(item.sleepTime)}}
             </span>
-          </template>
-        </van-cell>
-        <van-cell center class="custom-cell" title="睡眠时长" :value="formatSleepTimes(item.totalMinutes)" />
-        <van-cell :value="item.remark" value-class="desc-class" />
+          </van-step>
+          <van-step>
+            <van-card>
+              <template #title>
+                <svg-icon icon-class="title"/>
+                <span class="card-title">
+                  {{beautifyDate(item.sleepDate)}}
+                </span>
+              </template>
+              <template #tag>
+                <van-tag type="danger" v-if="item.quality<3">差</van-tag>
+              </template>
+              <template #desc>
+                </br>
+                <svg-icon icon-class="content"/>
+                  睡眠时长:{{formatSleepTimes(item.totalMinutes)}}
+                </br>
+                <svg-icon icon-class="item"/>
+                睡眠质量:<van-rate v-model="item.quality" :count="5" readonly color="#ffd21e"/>
+                </br>
+                <svg-icon icon-class="content"/>
+                {{item.remark}}
+              </template>
+              <template #thumb>
+                <svg-icon icon-class="sleep" className="icon-card" />
+              </template>
+            </van-card>
+            <van-row type="flex" justify="center">
+              <van-col span="12" style="text-align: center;">
+                <van-button plain class="app-menu-color" size="small" icon="edit"  :to="{ name:'SleepEdit',params: {id:item.id} }" style="width: 100%;" >修改</van-button>
+              </van-col>
+              <van-col span="12" style="text-align: center;">
+                <van-button plain class="app-menu-color" size="small" icon="delete-o"  @click="handleDelete(item.id)" style="width: 100%;">删除</van-button>
+              </van-col>
+            </van-row>
+          </van-step>
+          <van-step>
+            <span style="color: #550000;">
+              {{formatTime(item.getUpTime)}}
+            </span>
+          </van-step>
+        </van-steps>
       </van-cell-group>
       </van-list>
     </van-pull-refresh>
@@ -82,7 +89,7 @@
 
 <script>
   import { fetchList,deleteSleep,sleep,getUp } from '@/api/health/body/sleep'
-  import { Col,Row,List,PullRefresh,Tag,Dialog,SwipeCell,Search,Icon,Notify,Rate,Step, Steps  } from 'vant';
+  import { Col,Row,List,PullRefresh,Tag,Dialog,Search,Icon,Notify,Rate,Step, Steps,Card  } from 'vant';
   import TopBar from "components/TopBar";
   import { formatDateDesc,formatSeconds,getNowDateTimeString } from '@/utils/datetime'
 
@@ -99,10 +106,10 @@ export default {
     [Search.name]: Search,
     [Dialog.Component.name]: Dialog.Component,
     [Notify.Component.name]: Notify.Component,
-    [SwipeCell.name]: SwipeCell,
     [Rate.name]: Rate,
     [Step.name]: Step,
-    [Steps.name]: Steps
+    [Steps.name]: Steps,
+    [Card.name]: Card
   },
   data() {
     return {
