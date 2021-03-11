@@ -44,13 +44,19 @@
               <template #desc>
                 </br>
                 <svg-icon icon-class="content"/>
-                  睡眠时长:{{formatSleepTimes(item.totalMinutes)}}
+                <span class="card-content">
+                睡眠时长:{{formatSleepTimes(item.totalMinutes)}}
+                </span>
                 </br>
                 <svg-icon icon-class="item"/>
+                <span class="card-content">
                 睡眠质量:<van-rate v-model="item.quality" :count="5" readonly color="#ffd21e"/>
+                </span>
                 </br>
                 <svg-icon icon-class="content"/>
+                <span class="card-content">
                 {{item.remark}}
+                </span>
               </template>
               <template #thumb>
                 <svg-icon icon-class="sleep" className="icon-card" />

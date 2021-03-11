@@ -48,16 +48,24 @@
               <template #desc>
                 </br>
                 <svg-icon icon-class="content"/>
-                  针对疾病:{{item.disease}}
+                <span class="card-content">
+                 针对疾病:{{item.disease}}
+                </span>
                 </br>
                 <svg-icon icon-class="item"/>
+                <span class="card-content">
                 {{ item.perDay }}天{{item.perTimes}}次
+                </span>
                 </br>
                 <svg-icon icon-class="item"/>
+                <span class="card-content">
                 每次{{item.ec}}{{ item.eu }}
+                </span>
                 </br>
                 <svg-icon icon-class="item"/>
+                <span class="card-content">
                 {{item.useWay}}
+                </span>
               </template>
               <template #thumb>
                 <svg-icon icon-class="health" className="icon-card" />

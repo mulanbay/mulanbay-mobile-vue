@@ -38,15 +38,19 @@
             <template #desc>
               </br>
               <svg-icon icon-class="content"/>
-              {{item.content}}
+              <span class="card-content">
+                {{item.content}}
+              </span>
               </br>
               <svg-icon icon-class="item"/>
-              <span v-if="item.period!=null">
+              <span v-if="item.period!=null" class="card-content">
                 {{item.periodName}}{{item.periodValues}}
               </span>
               </br>
               <svg-icon icon-class="item"/>
-              延迟:{{item.delayCounts}}次
+              <span class="card-content">
+                延迟:{{item.delayCounts}}次
+              </span>
             </template>
             <template #thumb>
               <svg-icon :icon-class="item.iconClass" className="icon-card" />

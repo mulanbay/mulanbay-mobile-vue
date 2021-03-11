@@ -35,8 +35,14 @@ body .app {
 
 //卡片的标题
 .card-title {
-  color: #0079b6;
-  font-weight:bolder;
+  color: #4e1715;
+  //font-weight:bolder;
+  font-size: 14px;
+}
+
+//卡片的内容
+.card-content {
+  font-size: 12px;
 }
 
 /* 将button按钮固定在页面底部 */

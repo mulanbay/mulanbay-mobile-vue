@@ -44,22 +44,28 @@
           <template #tags>
             </br>
             <van-tag plain type="primary">{{item.paymentName}}</van-tag>
+            <span v-if="item.consumeType=='OUTBURST'">
+             &nbsp;&nbsp;
+            <van-tag plain type="warning">{{item.consumeTypeName}}</van-tag>
+            </span>
           </template>
           <template #desc>
             </br>
             </br>
             <svg-icon icon-class="item"/>
-            <span>
+            <span class="card-content">
               {{beautifyDateTime(item.buyDate)}}
             </span>
             </br>
             <svg-icon icon-class="item"/>
-            <span>
+            <span class="card-content">
               {{formatGoodsType(item)}}
             </span>
             </br>
             <svg-icon icon-class="item"/>
+            <span class="card-content">
               {{item.buyType.name}}
+            </span>
           </template>
           <template #thumb>
             <svg-icon icon-class="buy" className="icon-card" />
