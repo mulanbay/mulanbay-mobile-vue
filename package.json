@@ -1,7 +1,7 @@
 {
   "name": "mulanbay",
   "version": "2.1.0",
-  "description": "木兰湾管理系统",
+  "description": "木兰湾",
   "author": "牧羊人 <fenghong007@hotmail.com>",
   "private": true,
   "scripts": {

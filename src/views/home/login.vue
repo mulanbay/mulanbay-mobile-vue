@@ -5,7 +5,7 @@
     </div>
     <van-form @submit="onSubmit"  validate-trigger="onSubmit" :show-error="false" :submit-on-enter="false" label-width="4.0em" class="login-form">
       <div class="form-tip">
-        <span>木兰湾管理系统</span>
+        <span>木兰湾</span>
       </div>
       <van-field
         v-model="form.username"
