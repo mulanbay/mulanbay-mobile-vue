@@ -25,6 +25,12 @@ Jquery版本(V3.0版本后不再维护，以VUE版本为主)
 
 Vue、Vant、Echarts
 
+### 软件要求
+| 软件                    | 版本          |
+| ---------------------- | ------------- |
+| Node                   | v10.19.0      |
+| Nginx                  | 1.17+         |
+
 ### 文档地址
 
 木兰湾文档[https://www.yuque.com/mulanbay/rgvt6k/uy08n4](https://www.yuque.com/mulanbay/rgvt6k/uy08n4)
