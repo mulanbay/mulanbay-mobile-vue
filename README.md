@@ -62,6 +62,47 @@ npm run serve
 # 构建生产环境
 npm run build
 ```
+## 运行说明
+由于木兰湾是前后端分离项目，通常以nginx作为代理配置，方法参见文档
+
+```
+    server {
+
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+        
+        # 头像地址
+        location /20 {
+            root   /mulanbay/server/mulanbayServer/avatar;
+            try_files $uri $uri/ /index.html;
+            index  index.html index.htm;
+            charset   utf-8;
+        }
+        
+        # 后端api地址
+        location /api {
+            root   html;
+            index  index.html index.htm;
+            proxy_pass http://127.0.0.1:8080;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+        
+        # Vue的PC端地址(默认)
+        location / {
+            root /mulanbay/server/mulanbayServer/ui/vuem;
+            charset   utf-8;
+            try_files $uri $uri/ /index.html;
+            index  index.html index.htm;            
+        }
+    }
+
+```
 ## 项目截图
 <table>
     <tr>
