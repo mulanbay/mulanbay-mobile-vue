@@ -13,12 +13,14 @@
     <van-cell-group>
       <van-cell center class="custom-cell" title="本月已经过去" center style="height: 30px;" :value="budgetData.dayMonthRate+'%('+budgetData.monthPassDays+'天)'"/>
       <van-cell center class="custom-cell" title="本月已经消费" :value="formatMoney(budgetData.monthConsumeAmount)"/>
+      <van-cell center class="custom-cell" title="本月消费预测" :value="formatMoney(budgetData.monthPredict)"/>
       <van-cell center class="custom-cell" title="本月消费/预算比例" :value="budgetData.cbRate+'%'"/>
       <van-cell center class="custom-cell" title="本月剩余可消费" :value="formatMoney(budgetData.monthBudget-budgetData.monthConsumeAmount)"/>
       <van-cell center class="custom-cell" title="月度收入" :value="formatMoney(budgetData.totalIncome)"/>
       <van-cell center class="custom-cell" title="看病(自费)" :value="formatMoney(budgetData.totalTreatAmount)"/>
       <van-cell center class="custom-cell" title="新增存款" :value="formatMoney(budgetData.totalIncome- budgetData.totalConsumeAmount)"/>
       <van-cell center class="custom-cell" title="年度总预算" :value="formatMoney(budgetData.yearBudget)"/>
+      <van-cell center class="custom-cell" title="年度消费预测" :value="formatMoney(budgetData.yearPredict)"/>
       <van-cell center :value="budgetData.sumInfo" value-class="desc-class"/>
     </van-cell-group>
   </div>
