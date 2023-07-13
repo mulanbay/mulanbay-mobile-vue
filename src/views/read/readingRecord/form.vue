@@ -151,6 +151,21 @@
         :rules="[{ required: true, message: '请选择阅读状态' }]">
       </van-field>
       <van-field
+        v-model="form.sourceName"
+        required
+        :readonly="true"
+        label="来源"
+        placeholder="请选择来源"
+        is-link
+        @focus="showSource=true"
+        :rules="[{ required: true, message: '请选择来源' }]">
+      </van-field>
+      <van-field name="switch" required label="二手">
+        <template #input>
+          <van-switch v-model="form.secondhand" size="20" />
+        </template>
+      </van-field>
+      <van-field
         v-model="form.remark"
         rows="2"
         autosize
@@ -170,6 +185,7 @@
     <van-action-sheet v-model="showLanguage" :actions="languageOptions" @select="onSelectLanguage" />
     <van-action-sheet v-model="showBookType" :actions="bookTypeOptions" @select="onSelectBookType" />
     <van-action-sheet v-model="showStatus" :actions="statusOptions" @select="onSelectStatus" />
+    <van-action-sheet v-model="showSource" :actions="sourceOptions" @select="onSelectSource" />
 
     <!--借入时间选择器-->
     <van-popup v-model="showStoreDate" position="bottom">
@@ -275,7 +291,10 @@
         bookTypeOptions:[],
         //状态
         showStatus:false,
-        statusOptions:[]
+        statusOptions:[],
+        //来源
+        showSource:false,
+        sourceOptions:[]
       };
     },
     created() {
@@ -303,6 +322,9 @@
         this.getEnumTree('ReadingStatus','FIELD',false).then(response => {
           this.statusOptions = response;
         });
+        this.getEnumTree('BookSource','FIELD',false).then(response => {
+          this.sourceOptions = response;
+        });
       },
       /**图书类型选择确定*/
       onSelectBookCategory(item){
@@ -327,6 +349,12 @@
         this.form.status = item.id;
         this.form.statusName = item.text;
         this.showStatus = false;
+      },
+      /**状态选择确定*/
+      onSelectSource(item){
+        this.form.source = item.id;
+        this.form.sourceName = item.text;
+        this.showSource = false;
       },
       /**借入时间选择确定*/
       onConfirmStoreDate(){
@@ -361,8 +389,11 @@
           score:3,
           status:'UNREAD',
           statusName:'未读',
+          source:'BUY',
+          sourceName:'购买',
           bookType:'PAPER',
           bookTypeName:'纸质书',
+          secondhand:false,
           storeDate:undefined,
           proposedDate:undefined,
           beginDate:undefined,
