@@ -48,7 +48,7 @@
           </template>
         </van-swipe-cell>
         <van-cell center class="custom-cell" title="作者" :value="item.author" />
-        <van-cell center class="custom-cell" title="国家" :value="item.nation" />
+        <van-cell center class="custom-cell" title="国家" :value="item.country.cnName" />
         <van-cell center class="custom-cell" title="借入/购买日期" :value="item.storeDate" />
         <van-cell :value="item.bookName" value-class="desc-class"/>
         <van-row type="flex" justify="center">

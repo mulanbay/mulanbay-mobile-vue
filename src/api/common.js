@@ -67,6 +67,13 @@ export function getAllProvince() {
   })
 }
 
+export function getCountryTree() {
+  return request({
+    url: '/country/getCountryTree',
+    method: 'get'
+  })
+}
+
 export function getCityList(provinceId) {
   return request({
     url: '/city/getCityList',

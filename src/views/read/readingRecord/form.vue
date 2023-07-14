@@ -40,13 +40,15 @@
         :rules="[{ required: true, message: '请填写ISBN' }]"
       />
       <van-field
-        v-model="form.nation"
+        v-model="countryName"
         required
-        name="国家"
-        label="国家"
-        placeholder="请输入国家"
-        :rules="[{ required: true, message: '请填写国家' }]"
-      />
+        :readonly="true"
+        label="作者国家"
+        placeholder="请选择作者国家"
+        is-link
+        @focus="showCountry=true"
+        :rules="[{ required: true, message: '请选择作者国家' }]">
+      </van-field>
       <van-field
         v-model="bookCategoryName"
         required
@@ -186,6 +188,7 @@
     <van-action-sheet v-model="showBookType" :actions="bookTypeOptions" @select="onSelectBookType" />
     <van-action-sheet v-model="showStatus" :actions="statusOptions" @select="onSelectStatus" />
     <van-action-sheet v-model="showSource" :actions="sourceOptions" @select="onSelectSource" />
+    <van-action-sheet v-model="showCountry" :actions="countryOptions" @select="onSelectCountry" />
 
     <!--借入时间选择器-->
     <van-popup v-model="showStoreDate" position="bottom">
@@ -238,6 +241,7 @@
   import {Form, Field,Toast,Switch,Notify,DatetimePicker,Popup,ActionSheet,Icon,Rate} from 'vant';
   import { createReadingRecord,updateReadingRecord,getReadingRecord} from '@/api/read/readingRecord';
   import { getBookCategoryTree} from '@/api/read/bookCategory';
+  import { getCountryTree} from '@/api/common';
 
   import { getFormatDate,dateDiff } from '@/utils/datetime';
   import {getUserResidentCity } from "@/api/auth/user";
@@ -294,7 +298,11 @@
         statusOptions:[],
         //来源
         showSource:false,
-        sourceOptions:[]
+        sourceOptions:[],
+        //国家
+        countryName:undefined,
+        showCountry:false,
+        countryOptions:[]
       };
     },
     created() {
@@ -312,6 +320,9 @@
       initSelectOptions(){
         getBookCategoryTree(false).then(response => {
           this.bookCategoryOptions = response;
+        });
+        getCountryTree().then(response => {
+          this.countryOptions = response;
         });
         this.getEnumTree('BookLanguage','FIELD',false).then(response => {
           this.languageOptions = response;
@@ -356,6 +367,12 @@
         this.form.sourceName = item.text;
         this.showSource = false;
       },
+      /**国家选择确定*/
+      onSelectCountry(item){
+        this.form.countryId = item.id;
+        this.form.countryName = item.text;
+        this.showCountry = false;
+      },
       /**借入时间选择确定*/
       onConfirmStoreDate(){
         this.form.storeDate = getFormatDate(this.vanStoreDate,this.dateFormat);
@@ -383,7 +400,6 @@
         this.vanBeginDate = new Date();
         this.vanFinishedDate = new Date();
         this.form={
-          nation:'中国',
           language:'CHINESE',
           languageName:'中文',
           score:3,
@@ -407,6 +423,8 @@
           this.form=response;
           this.form.bookCategoryId = response.bookCategory.id;
           this.bookCategoryName = response.bookCategory.name;
+          this.form.countryId = response.country.id;
+          this.countryName = response.country.cnName;
           this.vanStoreDate = new Date(this.form.storeDate);
           this.vanProposedDate = new Date(this.form.proposedDate);
           this.vanBeginDate = this.form.beginDate==null ? new Date() : new Date(this.form.beginDate);
