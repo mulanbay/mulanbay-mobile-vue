@@ -55,6 +55,12 @@ export const constantRouterMap = [
         meta: { title: '用户消息', keepAlive: true }
       },
       {
+        path: '/user/message/detail/:id',
+        name: 'UserMessageDetail',
+        component: () => import('@/views/user/message/detail'),
+        meta: { title: '消息详情', keepAlive: true }
+      },
+      {
         path: '/data/userCalendar',
         name: 'UserCalendar',
         component: () => import('@/views/data/userCalendar/index'),

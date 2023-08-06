@@ -256,7 +256,8 @@ export default {
         needPeriod:true,
         needBudget:true,
         needTreatDrug:true,
-        needBandLog:false
+        needBandLog:false,
+        needBuyRecord:false
       }
       this.dataList = [];
       this.finished = false;
