@@ -40,7 +40,7 @@
         :rules="[{ required: true, message: '请填写ISBN' }]"
       />
       <van-field
-        v-model="countryName"
+        v-model="form.countryName"
         required
         :readonly="true"
         label="作者国家"
