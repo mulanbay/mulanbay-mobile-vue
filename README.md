@@ -2,6 +2,16 @@
 木兰湾是用于管理个人消费、锻炼、音乐、阅读、健康、饮食、人生经历等各个衣食住行信息的系统，通过提醒、计划模块利用调度系统来统计分析执行情况。
 并通过积分和评分体系来综合评估个人的总体状态。
 
+ **基于SpringBoot3和Vue3新版的项目地址：** 
+
+后端项目：
+* 服务器端[mulanbay-server3](https://gitee.com/mulanbay/mulanbay-server3),发行版:[releases](https://gitee.com/mulanbay/mulanbay-server3/releases)
+
+前端项目：
+* PC端[mulanbay-ui-vue3](https://gitee.com/mulanbay/mulanbay-ui-vue3),发行版:[releases](https://gitee.com/mulanbay/mulanbay-ui-vue3/releases)
+
+ **该项目基于SpringBoot2和Vue2** 
+
 该系统是前后端分离的项目，当前项目mulanbay-mobile-vue为前端移动版本，需要结合后端项目才能完整访问。
 
 木兰湾后端项目：
